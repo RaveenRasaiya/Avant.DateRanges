@@ -6,7 +6,7 @@ namespace Avant.Application.Interfaces
 {
     public interface IDateService
     {
-        int GetWeekDays(DateTime startDate, DateTime endDate);
-        int GetBusinessDays(DateTime startDate, DateTime endDate, IEnumerable<Holiday> holidays);
+        int GetWeekDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay);
+        int GetBusinessDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay, IEnumerable<Holiday> holidays);
     }
 }

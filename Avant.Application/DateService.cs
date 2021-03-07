@@ -1,9 +1,7 @@
-﻿using Avant.Application.Extensions;
-using Avant.Application.Interfaces;
+﻿using Avant.Application.Interfaces;
 using Avant.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Avant.Application
 {
@@ -15,21 +13,30 @@ namespace Avant.Application
         {
             _dateRangeValidationService = dateRangeValidationService;
         }
-        public int GetWeekDays(DateTime startDate, DateTime endDate)
+        public int GetWeekDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay)
+        {
+            if (excludeStartEndDay)
+            {
+                startDate = startDate.AddDays(1);
+                endDate = endDate.AddDays(-1);
+            }
+
+            _dateRangeValidationService.Validate(startDate, endDate);
+
+            int ndays = 1 + Convert.ToInt32((endDate - startDate).TotalDays);
+            int nsaturdays = (ndays + Convert.ToInt32(startDate.DayOfWeek)) / 7;
+            return ndays - 2 * nsaturdays
+                   - (startDate.DayOfWeek == DayOfWeek.Sunday ? 1 : 0)
+                   + (endDate.DayOfWeek == DayOfWeek.Saturday ? 1 : 0);
+        }
+
+        public int GetBusinessDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay, IEnumerable<Holiday> holidays)
         {
             _dateRangeValidationService.Validate(startDate, endDate);
 
-            var noOfWeekDays = Enumerable.Range(1, (endDate - startDate).Days-1)
-                                .Select(day => startDate.AddDays(day))
-                                .Where(day => !day.IsWeekend())
-                                .Count();
-                                
-            return noOfWeekDays;
-        }
+            var noOfWeekDays = GetWeekDays(startDate, endDate, excludeStartEndDay);
 
-        public int GetBusinessDays(DateTime startDate, DateTime endDate, IEnumerable<Holiday> holidays)
-        {
-            throw new NotImplementedException();
+            return noOfWeekDays;
         }
     }
 }

@@ -23,10 +23,10 @@ namespace Avent.Api.Controllers
         [ProducesResponseType(400)]
         public IActionResult WeekDays([FromBody] DateRequest dateRequest)
         {
-            var startDate = new DateTime(2014, 8, 1);
-            var endDate = new DateTime(2014, 8, 1);
+            var startDate = new DateTime(2014, 8, 13);
+            var endDate = new DateTime(2014, 8, 21);
 
-            return Ok(_dateService.GetWeekDays(startDate, endDate));
+            return Ok(_dateService.GetWeekDays(startDate, endDate, true));
         }
 
         [HttpPost("businessdays")]
@@ -38,7 +38,7 @@ namespace Avent.Api.Controllers
             var startDate = new DateTime(2014, 8, 7);
             var endDate = new DateTime(2014, 8, 11);
 
-            return Ok(_dateService.GetWeekDays(startDate, endDate));
+            return Ok(_dateService.GetWeekDays(startDate, endDate, true));
         }
     }
 }

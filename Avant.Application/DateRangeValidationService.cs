@@ -7,11 +7,11 @@ namespace Avant.Application
     {
         public void Validate(DateTime startDate, DateTime endDate)
         {
-            if (endDate < startDate)
+            if (endDate.Date < startDate.Date)
             {
                 throw new ArgumentException($"{nameof(endDate)} should be greater than {nameof(startDate)}");
             }
-            if (endDate == startDate)
+            if (endDate.Date == startDate.Date)
             {
                 throw new ArgumentException($"{nameof(startDate)} can't be  {nameof(endDate)}");
             }
