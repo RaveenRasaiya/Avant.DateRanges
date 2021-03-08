@@ -17,7 +17,10 @@ namespace Avant.Test.Controllers
 {
     public class CalendarControllerTest : IClassFixture<WebApplicationFactory<Startup>>
     {
+
         private readonly WebApplicationFactory<Startup> _factory;
+        private const string endPointUrl = "/api/v1/calendar/";
+        private const string mediaType = "application/json";
 
         public CalendarControllerTest(WebApplicationFactory<Startup> factory)
         {
@@ -31,9 +34,9 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
-            var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+            var content = new StringContent(string.Empty, Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert            
@@ -47,13 +50,13 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
                 ExcludeHolidays = true,
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert            
@@ -67,7 +70,7 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
@@ -75,7 +78,7 @@ namespace Avant.Test.Controllers
                 EndDate = new DateTime(2021, 03, 01),
                 ExcludeHolidays = true,
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert            
@@ -90,14 +93,14 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
                 StartDate = new DateTime(2021, 03, 01),
                 EndDate = new DateTime(2021, 03, 07),
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
@@ -116,14 +119,14 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
                 StartDate = new DateTime(2021, 03, 01),
                 EndDate = new DateTime(2021, 03, 07),
                 ExcludeStartAndEndDate = false
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
@@ -143,14 +146,14 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/weekdays";
+            string url = $"{endPointUrl}weekdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
                 StartDate = new DateTime(2021, 03, 01),
                 EndDate = new DateTime(2022, 03, 01),
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
@@ -169,7 +172,7 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/businessdays";
+            string url = $"{endPointUrl}businessdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
@@ -177,7 +180,7 @@ namespace Avant.Test.Controllers
                 EndDate = new DateTime(2013, 12, 31),
                 ExcludeHolidays = true,
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
@@ -195,7 +198,7 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/businessdays";
+            string url = $"{endPointUrl}businessdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
@@ -203,7 +206,7 @@ namespace Avant.Test.Controllers
                 EndDate = new DateTime(2013, 12, 31),
                 ExcludeHolidays = false,
                 ExcludeStartAndEndDate = true
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
@@ -222,7 +225,7 @@ namespace Avant.Test.Controllers
             // Arrange
             var client = _factory.CreateClient();
 
-            string url = "/api/v1/calendar/businessdays";
+            string url = $"{endPointUrl}businessdays";
 
             var content = new StringContent(JsonConvert.SerializeObject(new DateRequest
             {
@@ -230,7 +233,7 @@ namespace Avant.Test.Controllers
                 EndDate = new DateTime(2013, 12, 31),
                 ExcludeHolidays = false,
                 ExcludeStartAndEndDate = false
-            }), Encoding.UTF8, "application/json");
+            }), Encoding.UTF8, mediaType);
             // Act
             var response = await client.PostAsync(url, content);
             // Assert
