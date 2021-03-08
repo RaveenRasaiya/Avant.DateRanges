@@ -14,5 +14,11 @@ namespace Avant.Application.Extensions
             int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
             return dt.AddDays(-1 * diff).Date;
         }
+
+
+        public static bool IsWithInRange(this DateTime inputDate, DateTime startDate, DateTime endDate)
+        {
+            return inputDate > startDate && inputDate < endDate;
+        }
     }
 }
