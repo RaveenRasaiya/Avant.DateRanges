@@ -1,6 +1,7 @@
 using Avant.Application;
 using Avant.Application.Interfaces;
 using Avent.Api.Middlewares;
+using Avent.Api.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,9 @@ namespace Avent.Api
          
             services.AddScoped<IDateRangeValidationService, DateRangeValidationService>();
             services.AddScoped<IDateService, DateService>();
+            services.AddScoped<IHolidayService, HolidayService>();
+            IConfigurationSection sec = Configuration.GetSection("HolidaySetting");
+            services.Configure<HolidaySetting>(sec);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

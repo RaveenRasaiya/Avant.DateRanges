@@ -1,0 +1,14 @@
+[
+  {
+    "date": "02/12/2011",
+    "type": "Fixed"
+  },
+  {
+    "date": "03/12/2011",
+    "type": "FollowingWeekDay"
+  },
+  {
+    "date": "10/12/2011",
+    "type": "AlwaysSameDay"
+  }
+]

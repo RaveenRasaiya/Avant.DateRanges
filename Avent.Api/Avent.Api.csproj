@@ -14,4 +14,10 @@
     <ProjectReference Include="..\Avant.Domain\Avant.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Data\Holidays.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

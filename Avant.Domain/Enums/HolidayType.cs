@@ -3,7 +3,7 @@
     public enum HolidayType
     {
         Fixed = 1,
-        FollowingWeekDayIfWeekEnd,
+        FollowingWeekDay,
         AlwaysSameDay
     }
 }

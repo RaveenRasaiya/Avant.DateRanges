@@ -1,8 +1,12 @@
 ﻿using Avant.Application.Interfaces;
+using Avant.Domain.Entities;
 using Avant.Domain.Requests;
+using Avent.Api.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Avent.Api.Controllers
 {
@@ -12,21 +16,23 @@ namespace Avent.Api.Controllers
     {
         private readonly ILogger<CalendarController> _logger;
         private readonly IDateService _dateService;
+        private readonly IHolidayService _holidayService;
+        private readonly HolidaySetting _holidaySetting;
 
-        public CalendarController(ILogger<CalendarController> logger, IDateService dateService)
+
+        public CalendarController(ILogger<CalendarController> logger, IOptions<HolidaySetting> options, IDateService dateService, IHolidayService holidayService)
         {
             _logger = logger;
             _dateService = dateService;
+            _holidayService = holidayService;
+            _holidaySetting = options.Value;
         }
         [HttpPost("weekdays")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult WeekDays([FromBody] DateRequest dateRequest)
         {
-            var startDate = new DateTime(2014, 8, 13);
-            var endDate = new DateTime(2014, 8, 21);
-
-            return Ok(_dateService.GetWeekDays(startDate, endDate, true));
+            return Ok(_dateService.GetWeekDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate));
         }
 
         [HttpPost("businessdays")]
@@ -34,11 +40,12 @@ namespace Avent.Api.Controllers
         [ProducesResponseType(400)]
         public IActionResult BusinessDays([FromBody] DateRequest dateRequest)
         {
-
-            var startDate = new DateTime(2014, 8, 7);
-            var endDate = new DateTime(2014, 8, 11);
-
-            return Ok(_dateService.GetWeekDays(startDate, endDate, true));
+            IEnumerable<Holiday> holidays = Enumerable.Empty<Holiday>();
+            if (dateRequest.ExcludeHolidays)
+            {
+                holidays = _holidayService.GetHolidays(_holidaySetting.SourceFile);
+            }
+            return Ok(_dateService.GetBusinessDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate, holidays));
         }
     }
 }
