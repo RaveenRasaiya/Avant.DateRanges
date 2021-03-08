@@ -15,16 +15,16 @@ namespace Avent.Api.Controllers
     public class CalendarController : BaseController
     {
         private readonly ILogger<CalendarController> _logger;
-        private readonly IDateService _dateService;
-        private readonly IHolidayService _holidayService;
+        private readonly ICalendarService _calendarService;
+        private readonly IFileService _fileService;
         private readonly HolidaySetting _holidaySetting;
 
 
-        public CalendarController(ILogger<CalendarController> logger, IOptions<HolidaySetting> options, IDateService dateService, IHolidayService holidayService)
+        public CalendarController(ILogger<CalendarController> logger, IOptions<HolidaySetting> options, ICalendarService calendarService, IFileService fileService)
         {
             _logger = logger;
-            _dateService = dateService;
-            _holidayService = holidayService;
+            _calendarService = calendarService;
+            _fileService = fileService;
             _holidaySetting = options.Value;
         }
                
@@ -35,7 +35,7 @@ namespace Avent.Api.Controllers
         public IActionResult WeekDays([FromBody] DateRequest dateRequest)
         {
             Validate(dateRequest);
-            return Ok(_dateService.GetWeekDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate));
+            return Ok(_calendarService.GetWeekDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate));
         }
 
         [HttpPost("businessdays")]
@@ -47,9 +47,9 @@ namespace Avent.Api.Controllers
             IEnumerable<Holiday> holidays = Enumerable.Empty<Holiday>();
             if (dateRequest.ExcludeHolidays)
             {
-                holidays = _holidayService.GetHolidays(_holidaySetting.SourceFile);
+                holidays = _fileService.GetHolidays(_holidaySetting.SourceFile);
             }
-            return Ok(_dateService.GetBusinessDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate, holidays));
+            return Ok(_calendarService.GetBusinessDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate, holidays));
         }
     }
 }

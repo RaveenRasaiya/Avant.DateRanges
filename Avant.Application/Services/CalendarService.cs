@@ -7,13 +7,15 @@ using System.Linq;
 
 namespace Avant.Application
 {
-    public class DateService : IDateService
+    public class CalendarService : ICalendarService
     {
         private readonly IDateRangeValidationService _dateRangeValidationService;
+        private readonly IHolidayProviderService _holidayProviderService;
 
-        public DateService(IDateRangeValidationService dateRangeValidationService)
+        public CalendarService(IDateRangeValidationService dateRangeValidationService, IHolidayProviderService holidayProviderService)
         {
             _dateRangeValidationService = dateRangeValidationService;
+            _holidayProviderService = holidayProviderService;
         }
 
         public int GetWeekDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay)
@@ -55,20 +57,12 @@ namespace Avant.Application
                 for (int year = startDate.Year; year <= endDate.Year; year++)
                 {
                     var _holidayDate = new DateTime(year, holiday.Month, holiday.Day);
-                    if (holiday.Type == Domain.Enums.HolidayType.Fixed && _holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date) && !_holidayDate.Date.IsWeekend())
+                    var holidayService = _holidayProviderService.GetService(holiday.Type);
+                    if (holidayService == null)
                     {
-                        noOfWeekDays -= 1;
+                        continue;
                     }
-                    else if (holiday.Type == Domain.Enums.HolidayType.FollowingWeekDay && _holidayDate.Date.IsWeekend())
-                    {
-                        _holidayDate = _holidayDate.Date.StartOfWeek(DayOfWeek.Monday);
-
-                        if (_holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date))
-                        {
-                            noOfWeekDays -= 1;
-                        }
-                    }
-                    else if (holiday.Type == Domain.Enums.HolidayType.AlwaysSameDay && _holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date))
+                    if (holidayService.HasHoliday(_holidayDate, startDate.Date, endDate.Date))
                     {
                         noOfWeekDays -= 1;
                     }

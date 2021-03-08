@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Avant.Application.Interfaces
 {
-    public interface IDateService
+    public interface ICalendarService
     {
         int GetWeekDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay);
 

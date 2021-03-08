@@ -29,12 +29,16 @@ namespace Avent.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Avent.Api", Version = "v1" });
             });
-         
-            services.AddScoped<IDateRangeValidationService, DateRangeValidationService>();
-            services.AddScoped<IDateService, DateService>();
-            services.AddScoped<IHolidayService, HolidayService>();
+            
             IConfigurationSection sec = Configuration.GetSection("HolidaySetting");
             services.Configure<HolidaySetting>(sec);
+
+
+            services.AddScoped<IDateRangeValidationService, DateRangeValidationService>();
+            services.AddScoped<ICalendarService, CalendarService>();
+            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IHolidayProviderService, HolidayProviderService>();
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
