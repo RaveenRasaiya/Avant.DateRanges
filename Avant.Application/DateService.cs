@@ -57,27 +57,24 @@ namespace Avant.Application
         {
             foreach (var holiday in holidays)
             {
-                for (int year = startDate.Year; year <= endDate.Year; year++)
+                if (holiday.Type == Domain.Enums.HolidayType.Fixed && IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date) && !holiday.Date.IsWeekend())
                 {
-                    DateTime _holidayDate = new(year, holiday.Date.Month, holiday.Date.Day);
-                    if (holiday.Type == Domain.Enums.HolidayType.Fixed && IsWithInRange(_holidayDate.Date, startDate.Date, endDate.Date) && !_holidayDate.IsWeekend())
-                    {
-                        noOfWeekDays -= 1;
-                    }
-                    else if (holiday.Type == Domain.Enums.HolidayType.FollowingWeekDay && _holidayDate.IsWeekend())
-                    {
-                        _holidayDate = _holidayDate.StartOfWeek(DayOfWeek.Monday);
+                    noOfWeekDays -= 1;
+                }
+                else if (holiday.Type == Domain.Enums.HolidayType.FollowingWeekDay && holiday.Date.IsWeekend())
+                {
+                    holiday.Date = holiday.Date.StartOfWeek(DayOfWeek.Monday);
 
-                        if (IsWithInRange(_holidayDate.Date, startDate.Date, endDate.Date))
-                        {
-                            noOfWeekDays -= 1;
-                        }
-                    }
-                    else if (holiday.Type == Domain.Enums.HolidayType.AlwaysSameDay && IsWithInRange(_holidayDate.Date, startDate.Date, endDate.Date))
+                    if (IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date))
                     {
                         noOfWeekDays -= 1;
                     }
                 }
+                else if (holiday.Type == Domain.Enums.HolidayType.AlwaysSameDay && IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date))
+                {
+                    noOfWeekDays -= 1;
+                }
+
             }
 
             return noOfWeekDays;
