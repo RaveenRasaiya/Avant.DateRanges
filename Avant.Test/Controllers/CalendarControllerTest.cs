@@ -17,7 +17,7 @@ namespace Avant.Test.Controllers
 {
     public class CalendarControllerTest : IClassFixture<WebApplicationFactory<Startup>>
     {
-
+        private const string testCategory = "Integration";
         private readonly WebApplicationFactory<Startup> _factory;
         private const string endPointUrl = "/api/v1/calendar/";
         private const string mediaType = "application/json";
@@ -28,6 +28,7 @@ namespace Avant.Test.Controllers
         }
 
         [Fact]
+        [Trait("Category", testCategory)]
 
         public async Task CalendarController_Not_Send_Request_Parameter()
         {
@@ -44,7 +45,7 @@ namespace Avant.Test.Controllers
         }
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_Not_SetAnyDates()
         {
             // Arrange
@@ -64,7 +65,7 @@ namespace Avant.Test.Controllers
         }
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_WeekDays_SameDate()
         {
             // Arrange
@@ -87,7 +88,7 @@ namespace Avant.Test.Controllers
 
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_WeekDays_InAWeek()
         {
             // Arrange
@@ -113,7 +114,7 @@ namespace Avant.Test.Controllers
 
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_WeekDays_InAWeek_IncludeStartAndEnd()
         {
             // Arrange
@@ -140,7 +141,7 @@ namespace Avant.Test.Controllers
 
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_WeekDays_InAYear()
         {
             // Arrange
@@ -166,7 +167,7 @@ namespace Avant.Test.Controllers
 
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_BusinessDays_WithHolidays()
         {
             // Arrange
@@ -192,7 +193,7 @@ namespace Avant.Test.Controllers
         }
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_BusinessDays_WithOutHolidays()
         {
             // Arrange
@@ -219,7 +220,7 @@ namespace Avant.Test.Controllers
 
 
         [Fact]
-
+        [Trait("Category", testCategory)]
         public async Task CalendarController_BusinessDays_WithOutHolidays_IncludeStartAndEndDate()
         {
             // Arrange
