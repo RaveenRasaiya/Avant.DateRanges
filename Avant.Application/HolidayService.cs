@@ -20,7 +20,7 @@ namespace Avant.Application
             {
                 throw new FileNotFoundException($"{sourceFilePath} is not found");
             }
-            return JsonConvert.DeserializeObject<IEnumerable<Holiday>>(File.ReadAllText(sourceFilePath), new IsoDateTimeConverter() { DateTimeFormat = "dd/MM/yyyy" });
+            return JsonConvert.DeserializeObject<IEnumerable<Holiday>>(File.ReadAllText(sourceFilePath));
         }
     }
 }

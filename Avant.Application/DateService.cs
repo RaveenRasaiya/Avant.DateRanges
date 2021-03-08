@@ -57,32 +57,31 @@ namespace Avant.Application
         {
             foreach (var holiday in holidays)
             {
-                if (holiday.Type == Domain.Enums.HolidayType.Fixed && IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date) && !holiday.Date.IsWeekend())
+                for (int year = startDate.Year; year <= endDate.Year; year++)
                 {
-                    noOfWeekDays -= 1;
-                }
-                else if (holiday.Type == Domain.Enums.HolidayType.FollowingWeekDay && holiday.Date.IsWeekend())
-                {
-                    holiday.Date = holiday.Date.StartOfWeek(DayOfWeek.Monday);
+                    var _holidayDate = new DateTime(year, holiday.Month, holiday.Day);
+                    if (holiday.Type == Domain.Enums.HolidayType.Fixed && _holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date) && !_holidayDate.Date.IsWeekend())
+                    {
+                        noOfWeekDays -= 1;
+                    }
+                    else if (holiday.Type == Domain.Enums.HolidayType.FollowingWeekDay && _holidayDate.Date.IsWeekend())
+                    {
+                        _holidayDate = _holidayDate.Date.StartOfWeek(DayOfWeek.Monday);
 
-                    if (IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date))
+                        if (_holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date))
+                        {
+                            noOfWeekDays -= 1;
+                        }
+                    }
+                    else if (holiday.Type == Domain.Enums.HolidayType.AlwaysSameDay && _holidayDate.Date.IsWithInRange(startDate.Date, endDate.Date))
                     {
                         noOfWeekDays -= 1;
                     }
                 }
-                else if (holiday.Type == Domain.Enums.HolidayType.AlwaysSameDay && IsWithInRange(holiday.Date.Date, startDate.Date, endDate.Date))
-                {
-                    noOfWeekDays -= 1;
-                }
-
             }
 
             return noOfWeekDays;
         }
 
-        public bool IsWithInRange(DateTime inputDate, DateTime startDate, DateTime endDate)
-        {
-            return inputDate > startDate && inputDate < endDate;
-        }
     }
 }
