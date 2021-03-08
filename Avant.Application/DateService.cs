@@ -15,10 +15,14 @@ namespace Avant.Application
         {
             _dateRangeValidationService = dateRangeValidationService;
         }
-        
+
         public int GetWeekDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay)
         {
-            ExcludeStartAndEndDate(ref startDate, ref endDate, excludeStartEndDay);
+            if (excludeStartEndDay)
+            {
+                startDate = startDate.AddDays(1);
+                endDate = endDate.AddDays(-1);
+            }
 
             _dateRangeValidationService.Validate(startDate, endDate);
 
@@ -31,7 +35,11 @@ namespace Avant.Application
 
         public int GetBusinessDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay, IEnumerable<Holiday> holidays)
         {
-            ExcludeStartAndEndDate(ref startDate, ref endDate, excludeStartEndDay);
+            if (excludeStartEndDay)
+            {
+                startDate = startDate.AddDays(1);
+                endDate = endDate.AddDays(-1);
+            }
 
             _dateRangeValidationService.Validate(startDate, endDate);
 
@@ -45,17 +53,7 @@ namespace Avant.Application
             return noOfWeekDays;
         }
 
-        private void ExcludeStartAndEndDate(ref DateTime startDate, ref DateTime endDate, bool excludeStartEndDay)
-        {
-            if (excludeStartEndDay)
-            {
-                startDate = startDate.AddDays(1);
-                endDate = endDate.AddDays(-1);
-            }
-        }
-
-
-        private static int ProcessHolidays(DateTime startDate, DateTime endDate, IEnumerable<Holiday> holidays, int noOfWeekDays)
+        public int ProcessHolidays(DateTime startDate, DateTime endDate, IEnumerable<Holiday> holidays, int noOfWeekDays)
         {
             foreach (var holiday in holidays)
             {
@@ -85,9 +83,9 @@ namespace Avant.Application
             return noOfWeekDays;
         }
 
-        private static bool IsWithInRange(DateTime _holidayDate, DateTime startDate, DateTime endDate)
+        public bool IsWithInRange(DateTime inputDate, DateTime startDate, DateTime endDate)
         {
-            return _holidayDate > startDate && _holidayDate < endDate;
+            return inputDate > startDate && inputDate < endDate;
         }
     }
 }
