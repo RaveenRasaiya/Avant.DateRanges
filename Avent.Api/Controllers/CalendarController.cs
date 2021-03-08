@@ -12,7 +12,7 @@ namespace Avent.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CalendarController : ControllerBase
+    public class CalendarController : BaseController
     {
         private readonly ILogger<CalendarController> _logger;
         private readonly IDateService _dateService;
@@ -27,11 +27,14 @@ namespace Avent.Api.Controllers
             _holidayService = holidayService;
             _holidaySetting = options.Value;
         }
+               
+
         [HttpPost("weekdays")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult WeekDays([FromBody] DateRequest dateRequest)
         {
+            Validate(dateRequest);
             return Ok(_dateService.GetWeekDays(dateRequest.StartDate, dateRequest.EndDate, dateRequest.ExcludeStartAndEndDate));
         }
 
@@ -40,6 +43,7 @@ namespace Avent.Api.Controllers
         [ProducesResponseType(400)]
         public IActionResult BusinessDays([FromBody] DateRequest dateRequest)
         {
+            Validate(dateRequest);
             IEnumerable<Holiday> holidays = Enumerable.Empty<Holiday>();
             if (dateRequest.ExcludeHolidays)
             {
