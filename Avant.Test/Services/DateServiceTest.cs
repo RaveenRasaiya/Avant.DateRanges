@@ -84,7 +84,7 @@ namespace Avant.Test
 
             //act
             var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
-            result.Should().Be(17);
+            result.Should().Be(19);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Avant.Test
 
             //act
             var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
-            result.Should().Be(19);
+            result.Should().Be(21);
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Avant.Test
 
             //act         
             var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
-            result.Should().Be(254);
+            result.Should().Be(256);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace Avant.Test
             stopwatch.Start();
             var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
             stopwatch.Stop();
-            result.Should().Be(254);
+            result.Should().Be(256);
             stopwatch.Elapsed.Should().BeLessOrEqualTo(TimeSpan.FromMilliseconds(50));
         }
 

@@ -189,7 +189,7 @@ namespace Avant.Test.Controllers
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseContent = await response.Content.ReadAsStringAsync();
             responseContent.Should().NotBeNullOrEmpty();
-            responseContent.Should().BeEquivalentTo("213");
+            responseContent.Should().BeEquivalentTo("212");
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace Avant.Test.Controllers
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseContent = await response.Content.ReadAsStringAsync();
             responseContent.Should().NotBeNullOrEmpty();
-            responseContent.Should().BeEquivalentTo("215");
+            responseContent.Should().BeEquivalentTo("216");
         }
 
 

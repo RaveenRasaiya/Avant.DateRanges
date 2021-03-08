@@ -35,11 +35,6 @@ namespace Avant.Application
 
         public int GetBusinessDays(DateTime startDate, DateTime endDate, bool excludeStartEndDay, IEnumerable<Holiday> holidays)
         {
-            if (excludeStartEndDay)
-            {
-                startDate = startDate.AddDays(1);
-                endDate = endDate.AddDays(-1);
-            }
 
             _dateRangeValidationService.Validate(startDate, endDate);
 

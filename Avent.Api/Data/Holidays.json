@@ -13,5 +13,15 @@
     "day": 10,
     "month": 12,
     "type": "AlwaysSameDay"
+  },
+  {
+    "day": 6,
+    "month": 8,
+    "type": "AlwaysSameDay"
+  },
+  {
+    "day": 15,
+    "month": 8,
+    "type": "AlwaysSameDay"
   }
 ]
