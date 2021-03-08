@@ -11,12 +11,12 @@ using Xunit;
 
 namespace Avant.Test
 {
-    public class HolidayServiceTest
+    public class FileServiceTest
     {
-        private readonly IHolidayService _holidayService;
-        public HolidayServiceTest()
+        private readonly IFileService _fileService;
+        public FileServiceTest()
         {
-            _holidayService = new HolidayService();
+            _fileService = new FileService();
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace Avant.Test
             //arrange
             var filePath = string.Empty;
             //act
-            Action act = () => _holidayService.GetHolidays(filePath);
+            Action act = () => _fileService.GetHolidays(filePath);
             //assert
             act.Should().Throw<ArgumentNullException>().And.Message.Should().Be("Value cannot be null. (Parameter 'sourceFilePath')");
         }
@@ -36,7 +36,7 @@ namespace Avant.Test
             //arrange
             var filePath = @"C:\NotExists.json";
             //act
-            Action act = () => _holidayService.GetHolidays(filePath);
+            Action act = () => _fileService.GetHolidays(filePath);
             //assert
             act.Should().Throw<FileNotFoundException>().And.Message.Should().Be($"{filePath} is not found");
         }
@@ -55,7 +55,7 @@ namespace Avant.Test
            
             var fileInfo = CreateTestFile(JsonConvert.SerializeObject(holidays));
             //act
-            Action act = () => _holidayService.GetHolidays(fileInfo.FullName);
+            Action act = () => _fileService.GetHolidays(fileInfo.FullName);
 
             //assert
             act.Should().NotThrow<FileNotFoundException>();

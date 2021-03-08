@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Avant.Application
 {
-    public class HolidayService : IHolidayService
+    public class FileService : IFileService
     {
         public IEnumerable<Holiday> GetHolidays(string sourceFilePath)
         {

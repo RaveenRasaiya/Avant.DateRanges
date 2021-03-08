@@ -12,16 +12,18 @@ using Xunit;
 
 namespace Avant.Test
 {
-    public class DateServiceTest
+    public class CalendarServiceTest
     {
-        private readonly IDateService _dateService;
+        private readonly ICalendarService _calendarService;
         private readonly IDateRangeValidationService _dateRangeValidationService;
-        private readonly Mock<IHolidayService> _holidayService;
-        public DateServiceTest()
+        private readonly IHolidayProviderService _holidayProviderService;
+        private readonly Mock<IFileService> _holidayService;
+        public CalendarServiceTest()
         {
             _dateRangeValidationService = new DateRangeValidationService();
-            _holidayService = new Mock<IHolidayService>();
-            _dateService = new DateService(_dateRangeValidationService);
+            _holidayService = new Mock<IFileService>();
+            _holidayProviderService = new HolidayProviderService();
+            _calendarService = new CalendarService(_dateRangeValidationService, _holidayProviderService);
         }
 
         [Fact]
@@ -32,7 +34,7 @@ namespace Avant.Test
             var endDate = new DateTime(2021, 03, 14);
 
             //act
-            var result = _dateService.GetWeekDays(startDate, endDate, true);
+            var result = _calendarService.GetWeekDays(startDate, endDate, true);
             result.Should().Be(3);
         }
 
@@ -44,7 +46,7 @@ namespace Avant.Test
             var endDate = new DateTime(2021, 03, 14);
 
             //act
-            var result = _dateService.GetWeekDays(startDate, endDate, false);
+            var result = _calendarService.GetWeekDays(startDate, endDate, false);
             result.Should().Be(4);
         }
 
@@ -56,7 +58,7 @@ namespace Avant.Test
             var endDate = new DateTime(2021, 03, 14);
 
             //act
-            var result = _dateService.GetWeekDays(startDate, endDate, true);
+            var result = _calendarService.GetWeekDays(startDate, endDate, true);
             result.Should().Be(9);
         }
 
@@ -68,7 +70,7 @@ namespace Avant.Test
             var endDate = new DateTime(2021, 03, 21);
 
             //act
-            var result = _dateService.GetWeekDays(startDate, endDate, true);
+            var result = _calendarService.GetWeekDays(startDate, endDate, true);
             result.Should().Be(10);
         }
 
@@ -83,7 +85,7 @@ namespace Avant.Test
             _holidayService.Setup(f => f.GetHolidays(It.IsAny<string>())).Returns(holidays);
 
             //act
-            var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
+            var result = _calendarService.GetBusinessDays(startDate, endDate, true, holidays);
             result.Should().Be(19);
         }
 
@@ -98,7 +100,7 @@ namespace Avant.Test
             _holidayService.Setup(f => f.GetHolidays(It.IsAny<string>())).Returns(holidays);
 
             //act
-            var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
+            var result = _calendarService.GetBusinessDays(startDate, endDate, true, holidays);
             result.Should().Be(21);
         }
 
@@ -114,7 +116,7 @@ namespace Avant.Test
             _holidayService.Setup(f => f.GetHolidays(It.IsAny<string>())).Returns(holidays);
 
             //act         
-            var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
+            var result = _calendarService.GetBusinessDays(startDate, endDate, true, holidays);
             result.Should().Be(256);
         }
 
@@ -132,7 +134,7 @@ namespace Avant.Test
             //act
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            var result = _dateService.GetBusinessDays(startDate, endDate, true, holidays);
+            var result = _calendarService.GetBusinessDays(startDate, endDate, true, holidays);
             stopwatch.Stop();
             result.Should().Be(256);
             stopwatch.Elapsed.Should().BeLessOrEqualTo(TimeSpan.FromMilliseconds(50));
